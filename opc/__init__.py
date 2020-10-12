@@ -618,12 +618,12 @@ class OPCN3(_OPC):
                 data['Bin 19'] + data['Bin 20'] + data['Bin 21'] + data['Bin 22'] + \
                 data['Bin 23']
 
-        # Check that checksum and the least significant bits of the sum of histogram bins
-        # are equivilant
-        if (histogram_sum & 0x0000FFFF) != data['Checksum']:
-            print "CHECKSUM: ", histogram_sum, data['Checksum']
+        chk = self.checksum(resp)
+        # print('Checksum: ' + str(chk))
+        # Check that checksum from the device and the recalculation match
+        if (chk != data['Checksum']):
+            print("CHECKSUM | Device: " + str(data['Checksum']) + " | Calculated: " + str(chk))
             logger.warning("Data transfer was incomplete")
-            ##return None
 
         # If histogram is true, convert histogram values to number concentration
         if number_concentration is True:
@@ -690,6 +690,39 @@ class OPCN3(_OPC):
         #data = sorted(data.iterkeys()
 
         return data
+
+    def checksum(self, data):
+        """
+        Calculate checksum of histogram data per Alphasense documentation,
+        modified CRC16-MODBUS calculation
+
+        Parameters
+        ----------
+        data : dict
+            Alphasense histogram data.
+
+        Returns
+        -------
+        crc : int
+            Checksum calculated according to modified CRC16-MODBUS algorithm.
+
+        """
+        
+        poly = 0xA001
+        init_crc_val = 0xFFFF
+
+        crc = init_crc_val
+        
+        for i in range(0,len(data)-2):
+            crc ^= data[i]
+            for bit in range(0,8):
+                if (crc & 1): # if bit 0 of crc is 1
+                    crc >>= 1
+                    crc ^= poly
+                else:
+                    crc >>= 1
+        
+        return crc
 
     def sn(self):
         """Read the Serial Number string. This method is only available on OPC-N2
