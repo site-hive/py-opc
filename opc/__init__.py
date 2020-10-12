@@ -78,7 +78,7 @@ class _OPC(object):
                 # store the info_string
                 infostring = self.read_info_string()
 
-                print infostring
+                print(infostring)
 
                 try:
                     self.firmware['version'] = int(re.findall("\d{3}", infostring)[-1])
@@ -144,7 +144,7 @@ class _OPC(object):
         :type vals: array
         :rtype: float
         """
-        print "temp: ", vals
+        print("temp: ", vals)
         if len(vals) < 4:
             return None
         return ((vals[3] << 24) | (vals[2] << 16) | (vals[1] << 8) | vals[0]) 
@@ -316,30 +316,30 @@ class OPCN3(_OPC):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
         
         # SEND 0x03 TO SET FAN ON
         a=int('0x03',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x03])[0]
-        print "FAN_ON: ", hex(a), a
+        print("FAN_ON: ", hex(a), a)
 
     def fan_off(self):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
@@ -347,39 +347,39 @@ class OPCN3(_OPC):
         
         # SEND 0x02 TO SET FAN OFF
         a=int('0x02',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x02])[0]
-        print "FAN_OFF: ", hex(a), a
+        print("FAN_OFF: ", hex(a), a)
 
         
     def laser_on(self):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)        
 
         # SEND 0x07 TO SET FAN ON
         a=int('0x07',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x07])[0]
-        print "LASER_ON: ", hex(a), a
+        print("LASER_ON: ", hex(a), a)
 
     def laser_off(self):
         
         # SEND COMMAND BYTE 0x03
         a = self.cnxn.xfer([0x03])[0]
-        print "CMD: ", hex(a), a
+        print("CMD: ", hex(a), a)
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a = self.cnxn.xfer([0x03])[0]
         sleep(0.02)        
@@ -387,9 +387,9 @@ class OPCN3(_OPC):
 
         # SEND 0x06 TO SET LASER OFF
         a=int('0x06',16)
-        print "sending ", "{0:08b}".format(a)
+        print("sending ", "{0:08b}".format(a))
         a = self.cnxn.xfer([0x06])[0]        
-        print "LASER_OFF: ", hex(a), a
+        print("LASER_OFF: ", hex(a), a)
         
     def on(self):
         """Turn ON the OPC (fan and laser)
@@ -470,7 +470,7 @@ class OPCN3(_OPC):
         while a is not int('0x31',16): #[0xf3]: #49
             sleep(3)
             a = self.cnxn.xfer([0x03])[0]
-            print "CMD: ", hex(a), a
+            print("CMD: ", hex(a), a)
         sleep(0.02) # >10ms <100ms
         a2 = self.cnxn.xfer([0x03])[0]
         sleep(0.02)
