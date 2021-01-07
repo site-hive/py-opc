@@ -12,7 +12,7 @@ spi = SPI("/dev/ttyACM0")
 spi.mode = 1
 spi.max_speed_hz = 500000
 
-alpha = opc.OPCN2(spi, debug=True)
+alpha = opc.OPCN3(spi, debug=True)
 
 print ("Running manual OPC-N2 tests...")
 
